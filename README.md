@@ -1,122 +1,82 @@
-# unplugin-starter
+# unplugin-sri
 
-[![NPM version](https://img.shields.io/npm/v/unplugin-starter?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-starter)
+[![NPM version](https://img.shields.io/npm/v/unplugin-sri?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-sri)
 
-Starter template for [unplugin](https://github.com/unjs/unplugin).
+A universal plugin for adding Subresource Integrity (SRI) attributes to your HTML files.
 
-## Template Usage
+## Features
 
-To use this template, clone it down using:
+- 🔒 Automatically adds integrity attributes to script and link tags
+- 🔄 Supports various hash algorithms (default: sha384)
+- 🖼️ Optional support for image files
+- 🛠️ Works with Vite, Webpack, Rollup, and more
 
-```bash
-npx degit unplugin/unplugin-starter my-unplugin
+## Installation
+
 ```
 
-And do a global replacement of `unplugin-starter` with your plugin name.
+## Options
 
-Then you can start developing your unplugin 🔥
-
-To test your plugin, run: `pnpm run dev`
-To release a new version, run: `pnpm run release`
-
-## Install
-
-```bash
-npm i unplugin-starter
-```
-
-<details>
-<summary>Vite</summary><br>
-
-```ts
-// vite.config.ts
-import Starter from 'unplugin-starter/vite'
-
-export default defineConfig({
-  plugins: [
-    Starter({ /* options */ }),
-  ],
-})
-```
-
-Example: [`playground/`](./playground/)
-
-<br></details>
-
-<details>
-<summary>Rollup</summary><br>
-
-```ts
-// rollup.config.js
-import Starter from 'unplugin-starter/rollup'
-
-export default {
-  plugins: [
-    Starter({ /* options */ }),
-  ],
+interface Options {
+  /**
+   * Hash algorithm to use for SRI
+   * @default 'sha384'
+   */
+  algorithm?: string
+  
+  /**
+   * File extensions to process
+   * @default ['.js', '.css']
+   */
+  extensions?: string[]
+  
+  /**
+   * Whether to include image files
+   * @default false
+   */
+  includeImages?: boolean
+  
+  /**
+   * Callback function to execute when processing is complete
+   */
+  onComplete?: () => void
 }
+
+## How It Works
+
+The plugin works by:
+
+1. Waiting for the build process to complete
+2. Finding all HTML files in the output directory (defaults to `dist`)
+3. Processing each HTML file to:
+   - Find all `<script>` and `<link>` tags that reference local resources
+   - Calculate the SRI hash for each referenced file
+   - Add `integrity` and `crossorigin="anonymous"` attributes to the tags
+4. Writing the modified HTML files back to disk
+
+## Features
+
+- Automatically adds SRI attributes to JavaScript and CSS resources
+- Optionally processes image files
+- Skips external resources (URLs starting with `http`)
+- Skips resources that already have an `integrity` attribute
+- Adds `crossorigin="anonymous"` attribute when needed
+- Works with all major bundlers through the unplugin interface
+
+## Example
+
+Before:
+```html
+<link href="styles.css" rel="stylesheet">
+<script src="main.js"></script>
 ```
 
-<br></details>
-
-<details>
-<summary>Webpack</summary><br>
-
-```ts
-// webpack.config.js
-module.exports = {
-  /* ... */
-  plugins: [
-    require('unplugin-starter/webpack')({ /* options */ })
-  ]
-}
+After:
+```html
+<link href="styles.css" rel="stylesheet" integrity="sha384-1234abcd..." crossorigin="anonymous">
+<script src="main.js" integrity="sha384-5678efgh..." crossorigin="anonymous"></script>
 ```
 
-<br></details>
+## License
 
-<details>
-<summary>Nuxt</summary><br>
-
-```ts
-// nuxt.config.js
-export default defineNuxtConfig({
-  modules: [
-    ['unplugin-starter/nuxt', { /* options */ }],
-  ],
-})
-```
-
-> This module works for both Nuxt 2 and [Nuxt Vite](https://github.com/nuxt/vite)
-
-<br></details>
-
-<details>
-<summary>Vue CLI</summary><br>
-
-```ts
-// vue.config.js
-module.exports = {
-  configureWebpack: {
-    plugins: [
-      require('unplugin-starter/webpack')({ /* options */ }),
-    ],
-  },
-}
-```
-
-<br></details>
-
-<details>
-<summary>esbuild</summary><br>
-
-```ts
-// esbuild.config.js
-import { build } from 'esbuild'
-import Starter from 'unplugin-starter/esbuild'
-
-build({
-  plugins: [Starter()],
-})
-```
-
-<br></details>
+[MIT](./LICENSE)
