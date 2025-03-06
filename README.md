@@ -13,22 +13,111 @@ A universal plugin for adding Subresource Integrity (SRI) attributes to your HTM
 
 ## Installation
 
-
-
 ```
 pnpm install unplugin-sri
 ```
 
-```javascript
+## Usage
+
+<details>
+<summary>Vite</summary>
+
+```js
 // vite.config.js
-import sri from 'unplugin-sri/vite'
+import { defineConfig } from 'vite'
+import SRI from 'unplugin-sri/vite'
 
 export default defineConfig({
-  plugins: [sri()],
+  plugins: [
+    SRI({
+      // options
+    }),
+  ],
 })
 ```
+</details>
 
+<details>
+<summary>Webpack</summary>
 
+```js
+// webpack.config.js
+module.exports = {
+  plugins: [
+    require('unplugin-sri/webpack')({
+      // options
+    }),
+  ],
+}
+```
+</details>
+
+<details>
+<summary>Rollup</summary>
+
+```js
+// rollup.config.js
+import SRI from 'unplugin-sri/rollup'
+
+export default {
+  plugins: [
+    SRI({
+      // options
+    }),
+  ],
+}
+```
+</details>
+
+<details>
+<summary>esbuild</summary>
+
+```js
+// esbuild.config.js
+import { build } from 'esbuild'
+import SRI from 'unplugin-sri/esbuild'
+
+build({
+  plugins: [
+    SRI({
+      // options
+    }),
+  ],
+})
+```
+</details>
+
+<details>
+<summary>Nuxt</summary>
+
+```js
+// nuxt.config.js
+export default {
+  buildModules: [
+    ['unplugin-sri/nuxt', {
+      // options
+    }],
+  ],
+}
+```
+</details>
+
+<details>
+<summary>Vue CLI</summary>
+
+```js
+// vue.config.js
+module.exports = {
+  configureWebpack: {
+    plugins: [
+      require('unplugin-sri/webpack')({
+        // options
+      }),
+    ],
+  },
+}
+```
+</details>
 
 ## Options
 ```javascript
