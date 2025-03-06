@@ -80,7 +80,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch src",
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "play": "npm -C playground run dev",
     "prepublishOnly": "npm run build",
     "release": "bumpp && pnpm publish",
