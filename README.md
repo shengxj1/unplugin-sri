@@ -13,10 +13,25 @@ A universal plugin for adding Subresource Integrity (SRI) attributes to your HTM
 
 ## Installation
 
+
+
+```
+pnpm install unplugin-sri
 ```
 
-## Options
+```javascript
+// vite.config.js
+import sri from 'unplugin-sri/vite'
 
+export default defineConfig({
+  plugins: [sri()],
+})
+```
+
+
+
+## Options
+```javascript
 interface Options {
   /**
    * Hash algorithm to use for SRI
@@ -41,7 +56,7 @@ interface Options {
    */
   onComplete?: () => void
 }
-
+```
 ## How It Works
 
 The plugin works by:
