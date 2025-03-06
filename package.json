@@ -1,17 +1,17 @@
 {
-  "name": "unplugin-starter",
+  "name": "unplugin-sri",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.0.2",
   "packageManager": "pnpm@10.3.0",
   "description": "",
   "license": "MIT",
-  "homepage": "https://github.com/antfu/unplugin-starter#readme",
+  "homepage": "https://github.com/shengxj1/unplugin-sri#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/unplugin-starter.git"
+    "url": "git+https://github.com/shengxj1/unplugin-sri.git"
   },
   "bugs": {
-    "url": "https://github.com/antfu/unplugin-starter/issues"
+    "url": "https://github.com/shengxj1/unplugin-sri/issues"
   },
   "keywords": [
     "unplugin",
