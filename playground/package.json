@@ -1,10 +1,27 @@
 {
+  "name": "vue-project",
+  "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "nodemon -w '../src/**/*.ts' -e .ts -x vite"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.8.1",
+    "cheerio": "^1.0.0",
+    "node-fetch": "^3.3.2",
+    "pinia": "^3.0.1",
+    "unplugin-sri": "^0.0.5",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "vite": "^6.1.0",
-    "vite-plugin-inspect": "^10.1.1"
-  }
+    "@small-tech/vite-plugin-sri": "^1.0.1",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.2.0",
+    "vite-plugin-vue-devtools": "^7.7.2"
+  },
+  "packageManager": "pnpm@8.15.9+sha512.499434c9d8fdd1a2794ebf4552b3b25c0a633abcee5bb15e7b5de90f32f47b513aca98cd5cfd001c31f0db454bc3804edccd578501e4ca293a6816166bbd9f81"
 }
