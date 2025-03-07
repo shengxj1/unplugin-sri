@@ -23,9 +23,9 @@ pnpm install unplugin-sri
 <summary>Vite</summary>
 
 ```js
+import SRI from 'unplugin-sri/vite'
 // vite.config.js
 import { defineConfig } from 'vite'
-import SRI from 'unplugin-sri/vite'
 
 export default defineConfig({
   plugins: [
@@ -120,26 +120,26 @@ module.exports = {
 </details>
 
 ## Options
-```javascript
+```typescript
 interface Options {
   /**
    * Hash algorithm to use for SRI
    * @default 'sha384'
    */
   algorithm?: string
-  
+
   /**
    * File extensions to process
    * @default ['.js', '.css']
    */
   extensions?: string[]
-  
+
   /**
    * Whether to include image files
    * @default false
    */
   includeImages?: boolean
-  
+
   /**
    * Callback function to execute when processing is complete
    */
