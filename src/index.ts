@@ -4,6 +4,9 @@ import { createHash } from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import { createUnplugin } from 'unplugin'
+import process from 'node:process'
+import https from 'node:https'
+import http from 'node:http'
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
   const defaultOptions = {
@@ -112,20 +115,30 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
       const fullMatch = match[0]
       const src = match[1]
 
-      // 跳过外部链接和已有integrity属性的标签
-      if (src.startsWith('http') || fullMatch.includes('integrity=')) {
-        continue
-      }
-
-      const ext = path.extname(src).toLowerCase()
-      if (!allExtensions.includes(ext)) {
+      // 跳过已有integrity属性的标签
+      if (fullMatch.includes('integrity=')) {
         continue
       }
 
       try {
-        // 获取文件的绝对路径
-        const filePath = path.join(outDir, src.startsWith('/') ? src.slice(1) : src)
-        const fileContent = await fs.promises.readFile(filePath, 'utf-8')
+        let fileContent: string
+        
+        // 处理远程文件
+        if (src.startsWith('http') || src.startsWith('//')) {
+          // 确保URL格式正确
+          const url = src.startsWith('//') ? `https:${src}` : src
+          fileContent = await downloadFile(url)
+        } else {
+          const ext = path.extname(src).toLowerCase()
+          if (!allExtensions.includes(ext)) {
+            continue
+          }
+          
+          // 获取本地文件的绝对路径
+          const filePath = path.join(outDir, src.startsWith('/') ? src.slice(1) : src)
+          fileContent = await fs.promises.readFile(filePath, 'utf-8')
+        }
+        
         const integrity = generateIntegrity(fileContent, defaultOptions.algorithm)
 
         // 修复：正确处理 crossorigin 属性
@@ -139,6 +152,31 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
     }
 
     return result
+  }
+
+  // 下载文件并返回内容
+  async function downloadFile(url: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const client = url.startsWith('https') ? https : http
+      
+      client.get(url, (res) => {
+        if (res.statusCode !== 200) {
+          reject(new Error(`请求失败，状态码: ${res.statusCode}`))
+          return
+        }
+
+        let data = ''
+        res.on('data', (chunk) => {
+          data += chunk
+        })
+        
+        res.on('end', () => {
+          resolve(data)
+        })
+      }).on('error', (err) => {
+        reject(err)
+      })
+    })
   }
 
   // 处理HTML中的link标签
