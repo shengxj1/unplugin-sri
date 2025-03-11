@@ -10,6 +10,7 @@ A universal plugin for adding Subresource Integrity (SRI) attributes to your HTM
 - 🔄 Supports various hash algorithms (default: sha384)
 - 🖼️ Optional support for image files
 - 🛠️ Works with Vite, Webpack, Rollup, and more
+- 🔍 Supports remote resources (URLs starting with `http` or `//`)
 
 ## Installation
 
