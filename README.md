@@ -2,6 +2,8 @@
 
 [![NPM version](https://img.shields.io/npm/v/unplugin-sri?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-sri)
 
+[Video](https://www.youtube.com/watch?v=X-Thc5G7oU0)
+
 A universal plugin for adding Subresource Integrity (SRI) attributes to your HTML files.
 
 ## Features
