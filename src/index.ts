@@ -189,27 +189,36 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
       const fullMatch = match[0]
       const href = match[1]
 
-      // 跳过外部链接和已有integrity属性的标签
-      if (href.startsWith('http') || fullMatch.includes('integrity=')) {
-        continue
-      }
-
-      const ext = path.extname(href).toLowerCase()
-      if (!allExtensions.includes(ext)) {
+      // 跳过已有integrity属性的标签
+      if (fullMatch.includes('integrity=')) {
         continue
       }
 
       try {
-        // 获取文件的绝对路径
-        const filePath = path.join(outDir, href.startsWith('/') ? href.slice(1) : href)
-
-        const fileContent = await fs.promises.readFile(filePath, 'utf-8')
+        let fileContent: string
+        
+        // 处理远程文件
+        if (href.startsWith('http') || href.startsWith('//')) {
+          // 确保URL格式正确
+          const url = href.startsWith('//') ? `https:${href}` : href
+          fileContent = await downloadFile(url)
+        } else {
+          const ext = path.extname(href).toLowerCase()
+          if (!allExtensions.includes(ext)) {
+            continue
+          }
+          
+          // 获取本地文件的绝对路径
+          const filePath = path.join(outDir, href.startsWith('/') ? href.slice(1) : href)
+          fileContent = await fs.promises.readFile(filePath, 'utf-8')
+        }
+        
         // 计算 integrity 值
         const integrity = generateIntegrity(fileContent, defaultOptions.algorithm)
 
         // 修复：正确处理 crossorigin 属性
         const crossoriginAttr = fullMatch.includes('crossorigin') ? '' : ' crossorigin="anonymous"'
-        const newTag = fullMatch.replace('<link', `<link integrity="${integrity}" ${crossoriginAttr}`)
+        const newTag = fullMatch.replace('<link', `<link integrity="${integrity}"${crossoriginAttr}`)
         result = result.replace(fullMatch, newTag)
       }
       catch (error) {
